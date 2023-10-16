@@ -1,7 +1,7 @@
 package com.berk.currencyappcase.di
 
 import com.berk.currencyappcase.data.remote.CurrencyApi
-import com.berk.currencyappcase.main.DefaultMainRepository
+import com.berk.currencyappcase.main.MainRepositoryImpl
 import com.berk.currencyappcase.main.MainRepository
 import com.berk.currencyappcase.util.Constants.BASE_URL
 import dagger.Module
@@ -26,6 +26,6 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideMainRepository(api: CurrencyApi): MainRepository = DefaultMainRepository(api)
+    fun provideMainRepository(api: CurrencyApi): MainRepository = MainRepositoryImpl(api)
 
 }

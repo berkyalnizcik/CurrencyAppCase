@@ -5,7 +5,7 @@ import com.berk.currencyappcase.data.remote.models.CurrencyResponse
 import com.berk.currencyappcase.util.Resource
 import javax.inject.Inject
 
-class DefaultMainRepository @Inject constructor(
+class MainRepositoryImpl @Inject constructor(
     private val api: CurrencyApi
 ) : MainRepository {
 
