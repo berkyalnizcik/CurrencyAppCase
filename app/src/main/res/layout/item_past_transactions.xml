@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/imgPastTransactions"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="10dp"
         android:src="@drawable/img_europe"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,11 +21,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
-        android:text="Dolar"
+        android:fontFamily="@font/inter_medium"
         android:textColor="@color/black"
         android:textSize="11sp"
         app:layout_constraintStart_toEndOf="@+id/imgPastTransactions"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Dolar" />
 
     <TextView
         android:id="@+id/tvPastTransactionsValue"
@@ -32,33 +34,36 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
-        android:text="22,45TL"
+        android:fontFamily="@font/inter_regular"
         android:textColor="@color/text_color_past_transactions"
         android:textSize="11sp"
         app:layout_constraintStart_toEndOf="@+id/imgPastTransactions"
-        app:layout_constraintTop_toBottomOf="@+id/tvPastTransactionsName" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPastTransactionsName"
+        tools:text="22,45TL" />
 
     <TextView
-        android:id="@+id/tvCurrenciesValue"
+        android:id="@+id/tvPastTransactionsDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
-        android:text="22,45TL"
+        android:fontFamily="@font/inter_regular"
         android:textColor="@color/text_color_past_transactions"
         android:textSize="11sp"
         app:layout_constraintStart_toEndOf="@+id/imgPastTransactions"
-        app:layout_constraintTop_toBottomOf="@+id/tvPastTransactionsValue" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPastTransactionsValue"
+        tools:text="22,45TL" />
 
     <TextView
         android:id="@+id/tvAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="500,00 tl"
+        android:fontFamily="@font/inter_bold"
         android:textColor="@color/green"
         android:textSize="23sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        tools:text="500,00" />
 </androidx.constraintlayout.widget.ConstraintLayout>

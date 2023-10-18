@@ -1,18 +1,100 @@
 package com.berk.currencyappcase.ui.home
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.berk.currencyappcase.R
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.berk.currencyappcase.databinding.FragmentHomeBinding
+import com.berk.currencyappcase.main.MainViewModel
+import com.berk.currencyappcase.ui.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-class HomeFragment : Fragment() {
+@AndroidEntryPoint
+class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    private val viewModel: MainViewModel by viewModels()
+    private lateinit var currenciesAdapter: CurrenciesAdapter
+    private var fromCurrency = "TRY"
+    private var fromCurrencyAmount = 100
+    private val defaultToCurrency = listOf("USD", "EUR", "GBP", "RUB", "CNY")
+    private var randomSevenDigitNumber = 0
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        onClick()
+        initUI()
+        viewModel.convert(fromCurrencyAmount.toString(), fromCurrency, defaultToCurrency)
+        getExchangeRatesFromAPI()
+    }
+
+    private fun initUI() {
+        randomSevenDigitNumber = (1000000..9999999).random()
+        binding.tvWalletIdValue.text = randomSevenDigitNumber.toString()
+        binding.tvAmount.text = "₺$fromCurrencyAmount"
+    }
+
+    private fun onClick() {
+        binding.imgCopy.setOnClickListener {
+            binding.imgCopy.setOnClickListener {
+                val clipboard = getSystemService(requireContext(), ClipboardManager::class.java)
+                val clip = ClipData.newPlainText("wallet_id", binding.tvWalletIdValue.text)
+                clipboard?.setPrimaryClip(clip)
+                Toast.makeText(requireContext(), "Panoya kopyalandı", Toast.LENGTH_SHORT).show()
+            }
+        }
+        binding.btnAddMoney.setOnClickListener {
+            val randomIncrement = (0..100).random()
+            fromCurrencyAmount += randomIncrement
+            binding.tvAmount.text = "₺$fromCurrencyAmount"
+            viewModel.convert(fromCurrencyAmount.toString(), fromCurrency, defaultToCurrency)
+        }
+        binding.btnPastTransactions.setOnClickListener {
+            val direction =
+                HomeFragmentDirections.actionHomeFragmentToPastTransactionsFragment()
+            findNavController().navigate(direction)
+        }
+    }
+
+    private fun getExchangeRatesFromAPI() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.convertOperation.collect { event ->
+                when (event) {
+                    is MainViewModel.CurrencyEvent.Success -> {
+                        binding.progressBar.isVisible = false
+                        val convertedText = event.resultText
+                        currenciesAdapter = CurrenciesAdapter(convertedText)
+                        initAdapter()
+                    }
+                    is MainViewModel.CurrencyEvent.Failure -> {
+                        binding.progressBar.isVisible = false
+                    }
+                    is MainViewModel.CurrencyEvent.Loading -> {
+                        binding.progressBar.isVisible = true
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun initAdapter() {
+        binding.rcvCurrencies.adapter = currenciesAdapter
+        binding.rcvCurrencies.layoutManager = LinearLayoutManager(requireActivity())
+        currenciesAdapter.setOnItemClickListener {
+            val direction =
+                HomeFragmentDirections.actionHomeFragmentToExchangeDialogFragment(
+                    fromCurrency,
+                    it,
+                    fromCurrencyAmount.toString()
+                )
+            findNavController().navigate(direction)
+        }
     }
 }
