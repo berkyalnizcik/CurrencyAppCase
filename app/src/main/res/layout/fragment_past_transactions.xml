@@ -35,6 +35,8 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/border" />
+        app:layout_constraintTop_toBottomOf="@+id/border"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_past_transactions" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

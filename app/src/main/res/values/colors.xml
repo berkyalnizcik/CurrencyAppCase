@@ -3,5 +3,7 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="gray">#808080</color>
+    <color name="green">#1F932B</color>
     <color name="text_color">#323232</color>
+    <color name="text_color_past_transactions">#A8A8A8</color>
 </resources>
