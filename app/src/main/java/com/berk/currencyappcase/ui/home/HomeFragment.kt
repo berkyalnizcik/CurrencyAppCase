@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
@@ -11,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.berk.currencyappcase.R
 import com.berk.currencyappcase.databinding.FragmentHomeBinding
 import com.berk.currencyappcase.main.MainViewModel
 import com.berk.currencyappcase.ui.base.BaseFragment
@@ -32,6 +34,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         initUI()
         viewModel.convert(fromCurrencyAmount.toString(), fromCurrency, defaultToCurrency)
         getExchangeRatesFromAPI()
+        initSpinner()
     }
 
     private fun initUI() {
@@ -96,5 +99,53 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 )
             findNavController().navigate(direction)
         }
+    }
+
+    private fun initSpinner() {
+        binding.spFromCurrency.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parentView: AdapterView<*>?,
+                    selectedItemView: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    fromCurrency = binding.spFromCurrency.selectedItem as String
+                    when (fromCurrency) {
+                        "USD" -> {
+                            binding.imgTl.setImageResource(R.drawable.img_united_states)
+                            binding.tvAmount.text = "$$fromCurrencyAmount"
+                        }
+                        "EUR" -> {
+                            binding.imgTl.setImageResource(R.drawable.img_europe)
+                            binding.tvAmount.text = "€$fromCurrencyAmount"
+                        }
+                        "GBP" -> {
+                            binding.imgTl.setImageResource(R.drawable.img_united_kingdom)
+                            binding.tvAmount.text = "£$fromCurrencyAmount"
+                        }
+                        "RUB" -> {
+                            binding.imgTl.setImageResource(R.drawable.img_russia)
+                            binding.tvAmount.text = "₽$fromCurrencyAmount"
+                        }
+                        "CNY" -> {
+                            binding.imgTl.setImageResource(R.drawable.img_china)
+                            binding.tvAmount.text = "¥$fromCurrencyAmount"
+                        }
+                        else -> {
+                            binding.imgTl.setImageResource(R.drawable.img_tr)
+                            binding.tvAmount.text = "₺$fromCurrencyAmount"
+                        }
+                    }
+                    viewModel.convert(
+                        fromCurrencyAmount.toString(),
+                        fromCurrency,
+                        defaultToCurrency
+                    )
+                }
+
+                override fun onNothingSelected(parentView: AdapterView<*>?) {
+                }
+            }
     }
 }

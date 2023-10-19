@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -25,7 +26,9 @@ class ExchangeDialogFragment : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
     private val args: ExchangeDialogFragmentArgs by navArgs()
     private val viewModel: ExchangeDialogViewModel by viewModels()
+    private var toCurrencyAmount = ""
     private var purchasedAmount = ""
+    private var purchasedSymbol = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,16 +43,34 @@ class ExchangeDialogFragment : BottomSheetDialogFragment() {
         initUI()
         initData()
         initAmount()
+        onClickBuy()
+    }
+
+    private fun onClickBuy() {
         binding.btnBuy.setOnClickListener {
             val calendar = Calendar.getInstance()
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
             val currencyDate = dateFormat.format(calendar.time)
-            val transaction = PastTransactions(
-                currencyName = args.toCurrency,
-                currencyValue = purchasedAmount,
-                currencyDate = currencyDate
-            )
-            viewModel.insertTransactionToDatabase(transaction, requireContext())
+            if (args.fromCurrencyAmount.toInt() >= purchasedAmount.toInt()) {
+                val transaction = PastTransactions(
+                    toCurrencyName = args.toCurrency,
+                    toCurrencyValue = toCurrencyAmount,
+                    fromCurrencyValue = purchasedSymbol + purchasedAmount,
+                    transactionDate = currencyDate
+                )
+                viewModel.insertTransactionToDatabase(transaction, requireContext())
+                Toast.makeText(
+                    requireContext(),
+                    "İşlem başarıyla gerçekleştirildi.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Yeterli bakiyeniz bulunmamaktadır.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -63,6 +84,7 @@ class ExchangeDialogFragment : BottomSheetDialogFragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val amountText = s.toString()
                 if (amountText.isNotBlank()) {
+                    toCurrencyAmount = binding.edtBuyAmount.text.toString()
                     viewModel.exchangeCurrency(amountText, args.toCurrency, args.fromCurrency)
                 }
             }
@@ -101,36 +123,42 @@ class ExchangeDialogFragment : BottomSheetDialogFragment() {
                 binding.tvTotalAmountSymbol.text = "$"
                 binding.tvTitle.text = "${args.fromCurrency}/${args.toCurrency} Satın Alma"
                 binding.tvAmount.text = "$${args.fromCurrencyAmount}"
+                purchasedSymbol = "$"
             }
             "EUR" -> {
                 binding.imgSelectedCurrency.setImageResource(R.drawable.img_europe)
                 binding.tvTotalAmountSymbol.text = "€"
                 binding.tvTitle.text = "${args.fromCurrency}/${args.toCurrency} Satın Alma"
                 binding.tvAmount.text = "€${args.fromCurrencyAmount}"
+                purchasedSymbol = "€"
             }
             "GBP" -> {
                 binding.imgSelectedCurrency.setImageResource(R.drawable.img_united_kingdom)
                 binding.tvTotalAmountSymbol.text = "£"
                 binding.tvTitle.text = "${args.fromCurrency}/${args.toCurrency} Satın Alma"
                 binding.tvAmount.text = "£${args.fromCurrencyAmount}"
+                purchasedSymbol = "£"
             }
             "RUB" -> {
                 binding.imgSelectedCurrency.setImageResource(R.drawable.img_russia)
                 binding.tvTotalAmountSymbol.text = "₽"
                 binding.tvTitle.text = "${args.fromCurrency}/${args.toCurrency} Satın Alma"
                 binding.tvAmount.text = "₽${args.fromCurrencyAmount}"
+                purchasedSymbol = "₽"
             }
             "CNY" -> {
                 binding.imgSelectedCurrency.setImageResource(R.drawable.img_china)
                 binding.tvTotalAmountSymbol.text = "¥"
                 binding.tvTitle.text = "${args.fromCurrency}/${args.toCurrency} Satın Alma"
                 binding.tvAmount.text = "¥${args.fromCurrencyAmount}"
+                purchasedSymbol = "¥"
             }
             else -> {
                 binding.imgSelectedCurrency.setImageResource(R.drawable.img_tr)
                 binding.tvTotalAmountSymbol.text = "₺"
                 binding.tvTitle.text = "${args.fromCurrency}/${args.toCurrency} Satın Alma"
                 binding.tvAmount.text = "₺${args.fromCurrencyAmount}"
+                purchasedSymbol = "₺"
             }
         }
     }

@@ -7,7 +7,8 @@ import androidx.room.PrimaryKey
 data class PastTransactions(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val currencyName: String = "",
-    val currencyValue: String = "",
-    val currencyDate: String = ""
+    val toCurrencyName: String = "",
+    val toCurrencyValue: String = "",
+    val fromCurrencyValue: String = "",
+    val transactionDate: String = ""
 )
