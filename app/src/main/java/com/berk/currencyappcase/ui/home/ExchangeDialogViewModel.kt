@@ -48,7 +48,7 @@ class ExchangeDialogViewModel @Inject constructor(
     ) {
         val fromAmount = amountStr.toFloatOrNull()
         if (fromAmount == null) {
-            _convertOperation.value = CurrencyEvent.Failure("Geçerli bir miktar değil")
+            _convertOperation.value = CurrencyEvent.Failure("Not a valid amount")
             return
         }
 
@@ -61,7 +61,7 @@ class ExchangeDialogViewModel @Inject constructor(
                     val rates = ratesResponse.data!!.data
                     val rate = getRateForCurrency(toCurrency, rates)
                     if (rate == null) {
-                        _convertOperation.value = CurrencyEvent.Failure("Beklenmedik Hata")
+                        _convertOperation.value = CurrencyEvent.Failure("Unexpected Error")
                     } else {
                         val convertedCurrency = round(fromAmount * rate * 100) / 100
                         _convertOperation.value = CurrencyEvent.Success(

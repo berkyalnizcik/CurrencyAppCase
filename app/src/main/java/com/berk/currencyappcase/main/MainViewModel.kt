@@ -36,7 +36,7 @@ class MainViewModel @Inject constructor(
     ) {
         val fromAmount = amount.toFloatOrNull()
         if (fromAmount == null) {
-            _convertOperation.value = CurrencyEvent.Failure("Geçerli bir miktar değil")
+            _convertOperation.value = CurrencyEvent.Failure("Not a valid amount")
             return
         }
 

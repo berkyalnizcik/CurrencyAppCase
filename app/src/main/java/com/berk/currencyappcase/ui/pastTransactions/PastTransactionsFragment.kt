@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.berk.currencyappcase.R
 import com.berk.currencyappcase.data.local.AppDatabase
 import com.berk.currencyappcase.databinding.FragmentPastTransactionsBinding
 import com.berk.currencyappcase.ui.base.BaseFragment
@@ -28,7 +29,7 @@ class PastTransactionsFragment :
         lifecycleScope.launch {
             val pastTransactionsList = dao.getAllPastTransactions()
             if (pastTransactionsList.isEmpty()) {
-                Toast.makeText(requireContext(), "Henüz hiç işlem yok.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.no_action_text), Toast.LENGTH_SHORT).show()
             } else {
                 pastTransactionsAdapter = PastTransactionsAdapter(pastTransactionsList)
                 binding.rcvPastTransactions.layoutManager = LinearLayoutManager(requireContext())

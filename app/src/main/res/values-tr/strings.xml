@@ -8,6 +8,12 @@
     <string name="dialog_buy_amount_text">Satın almak istediğiniz</string>
     <string name="dialog_total_amount_text">Toplam Maliyet</string>
     <string name="buy_text">Satın al</string>
+    <string name="copy_text">Panoya kopyalandı</string>
+    <string name="success_text">İşlem başarıyla gerçekleştirildi.</string>
+    <string name="not_enough_money_text">Yeterli bakiyeniz bulunmamaktadır.</string>
+    <string name="no_action_text">Henüz hiç işlem yok.</string>
+    <string name="menu_home">Anasayfa</string>
+    <string name="menu_past_transactions">Geçmiş İşlemler</string>
 
     <string-array name="currency_codes">
         <item>TRY</item>

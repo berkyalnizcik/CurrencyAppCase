@@ -61,13 +61,13 @@ class ExchangeDialogFragment : BottomSheetDialogFragment() {
                 viewModel.insertTransactionToDatabase(transaction, requireContext())
                 Toast.makeText(
                     requireContext(),
-                    "İşlem başarıyla gerçekleştirildi.",
+                    getString(R.string.success_text),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Yeterli bakiyeniz bulunmamaktadır.",
+                    getString(R.string.not_enough_money_text),
                     Toast.LENGTH_SHORT
                 ).show()
             }

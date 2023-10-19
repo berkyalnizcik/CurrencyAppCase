@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 val clipboard = getSystemService(requireContext(), ClipboardManager::class.java)
                 val clip = ClipData.newPlainText("wallet_id", binding.tvWalletIdValue.text)
                 clipboard?.setPrimaryClip(clip)
-                Toast.makeText(requireContext(), "Panoya kopyalandı", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.copy_text), Toast.LENGTH_SHORT).show()
             }
         }
         binding.btnAddMoney.setOnClickListener {
